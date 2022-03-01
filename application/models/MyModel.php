@@ -19,7 +19,7 @@ class MyModel extends CI_Model {
 
     public function login($username,$password)
     { 
-        $q  = $this->db->select('password,id,role,nama,lokasi,id_dipa')->from('users')->where('username',$username)->get()->row();
+        $q  = $this->db->select('password,id,role,nama,username,whatsapp')->from('users')->where('username',$username)->get()->row();
         if($q == ""){
             // echo 'wkwk';
             return array('status' => 400,'message' => 'Username not found.');
@@ -28,8 +28,8 @@ class MyModel extends CI_Model {
             $id              = $q->id;
             $role = $q->role;
             $nama = $q->nama;
-            $lokasi = $q->lokasi;
-            $id_dipa = $q->id_dipa;
+            $username = $q->username;
+            $whatsapp = $q->whatsapp;
             if (hash_equals($hashed_password, crypt($password, $hashed_password)) || $password === $hashed_password) {
                $last_login = date('Y-m-d H:i:s');
                $token = crypt(substr( md5(rand()), 0, 7),"coba-salt");
@@ -44,8 +44,8 @@ class MyModel extends CI_Model {
                   $this->db->trans_commit();
                   return array('status' => 200,'message' => 'Successfully login.',
                                 'id' => $id, 'token' => $token,
-                                'nama' => $nama, 'lokasi' => $lokasi,'role' => $role,
-                                'id_dipa' => $id_dipa
+                                'nama' => $nama, 'username' => $username,'role' => $role,
+                                'whatsapp' => $whatsapp
                                 );
                }
             } else {
