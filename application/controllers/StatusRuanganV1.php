@@ -42,18 +42,17 @@ class StatusRuangan extends CI_Controller {
 			}
 		}
 	}
-
-	public function statusRuanganByWaktu($waktu) //parameter didapet dari url
+	public function getDetailByFolder($id_folder) //parameter didapet dari url
 	{
 		$method = $_SERVER['REQUEST_METHOD'];
-		if($method != 'GET' || $this->uri->segment(3) == ''){
+		if($method != 'GET' || $this->uri->segment(3) == '' || is_numeric($this->uri->segment(3)) == FALSE){
 			json_output(400,array('status' => 400,'message' => 'Bad request.'));
 		} else {
 			$check_auth_client = $this->MyModel->check_auth_client();
 			if($check_auth_client == true){
 		        	$response = $this->MyModel->auth();
 		        	if($response['status'] == 200){
-		        		$resp = $this->MyModel->statusRuanganByWaktu($waktu);
+		        		$resp = $this->MyModel->get_row_detail_by_foreignkey($this->table_name,$id_folder,"id_folder");
 						json_output($response['status'],$resp);
 		        	}
 			}
@@ -72,7 +71,7 @@ class StatusRuangan extends CI_Controller {
 		        	$respStatus = $response['status'];
 		        	if($response['status'] == 200){
 						$params = json_decode(file_get_contents('php://input'), TRUE);
-						if (empty($params['id_ruangan']) || empty($params['id_ob']) || empty($params['id_pengawas']) || empty($params['status_ob']) || empty($params['status_pengawas']) || empty($params['waktu']) || empty($params['tanggal']) ) {//ISI NAMA PARAMETER INPUT POST NYA
+						if (empty($params['id_laporan_bulanan']) || empty($params['status_ob']) || empty($params['status_pengawas']) || empty($params['status_pj']) || empty($params['waktu']) || empty($params['tanggal']) ) {//ISI NAMA PARAMETER INPUT POST NYA
 							$respStatus = 400;
 							$resp = array('status' => 400,'message' =>  'Input form masih salah, silahkan coba lagi');
 						} else {
@@ -97,7 +96,7 @@ class StatusRuangan extends CI_Controller {
 				if($response['status'] == 200){
 					$params = json_decode(file_get_contents('php://input'), TRUE);
 					$params['updated_at'] = date('Y-m-d H:i:s');
-					if (empty($params['id_ruangan']) || empty($params['id_ob']) || empty($params['id_pengawas']) || empty($params['status_ob']) || empty($params['status_pengawas']) || empty($params['waktu']) || empty($params['tanggal']) ) { //CEK PARAMETER INPUT NYA
+					if (empty($params['id_laporan_bulanan']) || empty($params['status_ob']) || empty($params['status_pengawas']) || empty($params['status_pj']) || empty($params['waktu']) || empty($params['tanggal']) ) { //CEK PARAMETER INPUT NYA
 						$respStatus = 400;
 						$resp = array('status' => 400,'message' =>  'Input form masih salah, silahkan coba lagi');
 					} else {
