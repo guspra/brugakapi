@@ -60,8 +60,26 @@ class StatusRuangan extends CI_Controller {
 		}
 	}
 
+	public function statusRuanganByTanggal($tanggalAwal, $tanggalAkhir) //parameter didapet dari url
+	{
+		$method = $_SERVER['REQUEST_METHOD'];
+		if($method != 'GET' || $this->uri->segment(3) == ''){
+			json_output(400,array('status' => 400,'message' => 'Bad request.'));
+		} else {
+			$check_auth_client = $this->MyModel->check_auth_client();
+			if($check_auth_client == true){
+		        	$response = $this->MyModel->auth();
+		        	if($response['status'] == 200){
+		        		$resp = $this->MyModel->statusRuanganByTanggal($tanggalAwal, $tanggalAkhir);
+						json_output($response['status'],$resp);
+		        	}
+			}
+		}
+	}
+
     public function create()
 	{
+		// exit;
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($method != 'POST'){
 			json_output(400,array('status' => 400,'message' => 'Bad request.'));
@@ -78,6 +96,7 @@ class StatusRuangan extends CI_Controller {
 						} else {
 								$resp = $this->MyModel->insert_to_table($this->table_name,$params);
 						}
+						// print_r('hahaha'); exit;
 						json_output($respStatus,$resp);
 		        	}
 			}
