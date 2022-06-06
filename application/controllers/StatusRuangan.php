@@ -77,6 +77,23 @@ class StatusRuangan extends CI_Controller {
 		}
 	}
 
+	public function statusRuanganByTanggalByWaktu($tanggalAwal, $tanggalAkhir, $waktu) //parameter didapet dari url
+	{
+		$method = $_SERVER['REQUEST_METHOD'];
+		if($method != 'GET' || $this->uri->segment(3) == ''){
+			json_output(400,array('status' => 400,'message' => 'Bad request.'));
+		} else {
+			$check_auth_client = $this->MyModel->check_auth_client();
+			if($check_auth_client == true){
+		        	$response = $this->MyModel->auth();
+		        	if($response['status'] == 200){
+		        		$resp = $this->MyModel->statusRuanganByTanggalByWaktu($tanggalAwal, $tanggalAkhir, $waktu);
+						json_output($response['status'],$resp);
+		        	}
+			}
+		}
+	}
+
 	public function statusRuanganByTanggalByID($tanggalAwal, $tanggalAkhir, $idRuangan) //parameter didapet dari url
 	{
 		$method = $_SERVER['REQUEST_METHOD'];
@@ -88,6 +105,23 @@ class StatusRuangan extends CI_Controller {
 		        	$response = $this->MyModel->auth();
 		        	if($response['status'] == 200){
 		        		$resp = $this->MyModel->statusRuanganByTanggalByID($tanggalAwal, $tanggalAkhir, $idRuangan);
+						json_output($response['status'],$resp);
+		        	}
+			}
+		}
+	}
+
+	public function statusRuanganByTanggalByIDByWaktu($tanggalAwal, $tanggalAkhir, $idRuangan, $waktu) //parameter didapet dari url
+	{
+		$method = $_SERVER['REQUEST_METHOD'];
+		if($method != 'GET' || $this->uri->segment(3) == ''){
+			json_output(400,array('status' => 400,'message' => 'Bad request.'));
+		} else {
+			$check_auth_client = $this->MyModel->check_auth_client();
+			if($check_auth_client == true){
+		        	$response = $this->MyModel->auth();
+		        	if($response['status'] == 200){
+		        		$resp = $this->MyModel->statusRuanganByTanggalByIDByWaktu($tanggalAwal, $tanggalAkhir, $idRuangan, $waktu);
 						json_output($response['status'],$resp);
 		        	}
 			}

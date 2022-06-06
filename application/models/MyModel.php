@@ -286,10 +286,28 @@ class MyModel extends CI_Model {
         ")->result();
     }
 
+    public function statusRuanganByTanggalByWaktu($tanggalAwal, $tanggalAkhir, $waktu){
+        return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, status_ruangan.waktu, status_ob, status_pengawas, tanggal
+        FROM ruangan
+        JOIN status_ruangan ON status_ruangan.id_ruangan = ruangan.id AND status_ruangan.waktu = '$waktu' AND  status_ruangan.tanggal BETWEEN '$tanggalAwal' AND '$tanggalAkhir'
+        JOIN users AS users_ob ON status_ruangan.id_ob = users_ob.id
+        JOIN users AS users_pengawas ON status_ruangan.id_pengawas = users_pengawas.id;
+        ")->result();
+    }
+
     public function statusRuanganByTanggalByID($tanggalAwal, $tanggalAkhir, $idRuangan){
         return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, status_ruangan.waktu, status_ob, status_pengawas, tanggal
         FROM ruangan
         JOIN status_ruangan ON status_ruangan.id_ruangan = ruangan.id AND ruangan.id = '$idRuangan' AND status_ruangan.tanggal BETWEEN '$tanggalAwal' AND '$tanggalAkhir'
+        JOIN users AS users_ob ON status_ruangan.id_ob = users_ob.id
+        JOIN users AS users_pengawas ON status_ruangan.id_pengawas = users_pengawas.id;
+        ")->result();
+    }
+
+    public function statusRuanganByTanggalByIDByWaktu($tanggalAwal, $tanggalAkhir, $idRuangan, $waktu){
+        return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, status_ruangan.waktu, status_ob, status_pengawas, tanggal
+        FROM ruangan
+        JOIN status_ruangan ON waktu = '$waktu' AND status_ruangan.id_ruangan = ruangan.id AND ruangan.id = '$idRuangan' AND status_ruangan.tanggal BETWEEN '$tanggalAwal' AND '$tanggalAkhir'
         JOIN users AS users_ob ON status_ruangan.id_ob = users_ob.id
         JOIN users AS users_pengawas ON status_ruangan.id_pengawas = users_pengawas.id;
         ")->result();
