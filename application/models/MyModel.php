@@ -304,6 +304,23 @@ class MyModel extends CI_Model {
         ")->result();
     }
 
+//    dirubahJo
+    public function testData($IdRuangan){
+        return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, status_ruangan.waktu, status_ob, status_pengawas, tanggal
+        FROM ruangan
+        JOIN status_ruangan ON status_ruangan.id_ruangan = ruangan.id AND ruangan.id = '$IdRuangan'
+        JOIN users AS users_ob ON status_ruangan.id_ob = users_ob.id
+        JOIN users AS users_pengawas ON status_ruangan.id_pengawas = users_pengawas.id;")->result();
+    }
+
+    public function getStatusShiftWaktu($IdRuangan, $Tanggal, $Waktu){
+        return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS 
+        id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, 
+        status_ruangan.waktu, status_ob, status_pengawas, tanggal,status_ruangan.catatan_ob,status_ruangan.catatan_pengawas FROM ruangan JOIN status_ruangan ON status_ruangan.id_ruangan = ruangan.id AND ruangan.id = '$IdRuangan' 
+        AND DATE(status_ruangan.tanggal)='$Tanggal' AND waktu= '$Waktu' JOIN users AS users_ob ON status_ruangan.id_ob = users_ob.id JOIN users AS users_pengawas 
+        ON status_ruangan.id_pengawas = users_pengawas.id")->row();
+    }
+
     public function statusRuanganByTanggalByIDByWaktu($tanggalAwal, $tanggalAkhir, $idRuangan, $waktu){
         return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, status_ruangan.waktu, status_ob, status_pengawas, tanggal
         FROM ruangan
