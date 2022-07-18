@@ -296,7 +296,8 @@ class MyModel extends CI_Model {
     }
 
     public function statusRuanganByTanggalByID($tanggalAwal, $tanggalAkhir, $idRuangan){
-        return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, status_ruangan.waktu, status_ob, status_pengawas, tanggal
+        return $this->db->query("SELECT status_ruangan.id_ruangan, ruangan.nama AS nama_ruangan, status_ruangan.id AS id_status_ruangan, status_ruangan.id_ob, users_ob.nama as nama_ob, status_ruangan.id_pengawas, users_pengawas.nama AS nama_pengawas, status_ruangan.waktu, status_ob, status_pengawas, tanggal,
+        status_ruangan.catatan_ob,status_ruangan.catatan_pengawas
         FROM ruangan
         JOIN status_ruangan ON status_ruangan.id_ruangan = ruangan.id AND ruangan.id = '$idRuangan' AND status_ruangan.tanggal BETWEEN '$tanggalAwal' AND '$tanggalAkhir'
         JOIN users AS users_ob ON status_ruangan.id_ob = users_ob.id
